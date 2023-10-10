@@ -1,0 +1,88 @@
+package com.toluwalase.musicapp0.Customs;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.toluwalase.musicapp0.Interfaces.SongClickListener;
+import com.toluwalase.musicapp0.Models.MusicFiles;
+import com.toluwalase.musicapp0.R;
+
+public class Adapter extends ListAdapter<MusicFiles, Adapter.MyViewHolder> {
+    Context context;
+    SongClickListener listener;
+
+    public Adapter (Context context, SongClickListener mListener){
+        super(new MusicDiffUtil());
+        this.context = context;
+        this.listener = mListener;
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView file_name, file_artist, file_album, file_duration;
+        ImageView album_art, options_button;
+
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            file_duration = itemView.findViewById(R.id.song_duration);
+            file_name = itemView.findViewById(R.id.music_file_name);
+            file_artist = itemView.findViewById(R.id.music_file_Artist);
+            file_album = itemView.findViewById(R.id.music_file_album);
+            album_art = itemView.findViewById(R.id.music_img);
+            options_button = itemView.findViewById(R.id.options);
+        }
+    }
+
+    @NonNull
+    @Override
+    public Adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.music_items, parent, false);
+        return new Adapter.MyViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull Adapter.MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.file_name.setText(getItem(position).getTitle());
+        holder.file_artist.setText(getItem(position).getArtist());
+        holder.file_album.setText(getItem(position).getAlbum());
+
+        byte[] image = getAlbumArt(getItem(position).getPath());
+        Uri uri = Uri.parse(getItem(position).getPath());
+        if(image != null){
+            Glide.with(context).asBitmap().load(image).into(holder.album_art);
+        }
+        else{
+            Glide.with(context).asBitmap().load(R.drawable.default_art).into(holder.album_art);
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onClick(getItem(holder.getAdapterPosition()), position);
+            }
+        });
+    }
+
+    private byte[] getAlbumArt(String path){
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+
+        try {
+            retriever.setDataSource(path);
+            return retriever.getEmbeddedPicture();
+        } catch (RuntimeException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
