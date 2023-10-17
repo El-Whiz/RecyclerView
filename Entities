@@ -1,0 +1,50 @@
+public static FavouriteEntity convertPlaylistEntry2FavEntry(PlaylistEntity entity) {
+        FavouriteEntity favEntry = new FavouriteEntity();
+        favEntry.setTitle(entity.getTitle());
+        favEntry.setAlbum(entity.getAlbum());
+        favEntry.setArtist(entity.getArtist());
+        favEntry.setComposer(entity.getComposer());
+        favEntry.setDuration(entity.getDuration());
+        favEntry.setGenre(entity.getGenre());
+        favEntry.setId(entity.getId());
+        favEntry.setSize(entity.getSize());
+        favEntry.setUid(entity.getUid());
+        favEntry.setUriPath(entity.getUriPath());
+        favEntry.setYear(entity.getYear());
+
+        return favEntry;
+    }
+
+    public static PlaylistEntity convertFavEntry2PlaylistEntry(FavouriteEntity entity) {
+        PlaylistEntity playlistEntity = new PlaylistEntity();
+        playlistEntity.setTitle(entity.getTitle());
+        playlistEntity.setAlbum(entity.getAlbum());
+        playlistEntity.setArtist(entity.getArtist());
+        playlistEntity.setComposer(entity.getComposer());
+        playlistEntity.setDuration(entity.getDuration());
+        playlistEntity.setGenre(entity.getGenre());
+        playlistEntity.setId(entity.getId());
+        playlistEntity.setSize(entity.getSize());
+        playlistEntity.setUid(entity.getUid());
+        playlistEntity.setUriPath(entity.getUriPath());
+        playlistEntity.setYear(entity.getYear());
+
+        return playlistEntity;
+    }
+
+    public static List<PlaylistEntity> convertFavListToPlaylist(List<FavouriteEntity> favList) {
+        List<PlaylistEntity> playlist = new ArrayList<>();
+
+        if (favList != null) {
+
+            for (int i = 0; i < favList.size(); i++) {
+
+                PlaylistEntity playlistEntity = new PlaylistEntity();
+                playlistEntity = convertFavEntry2PlaylistEntry(favList.get(i));
+                playlist.add(playlistEntity);
+            }
+        }
+
+        return playlist;
+    }
+}
