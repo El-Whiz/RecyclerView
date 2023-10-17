@@ -1,0 +1,67 @@
+Uri contentUri = ContentUris.withAppendedId(
+                            MediaStore.Audio.Media.INTERNAL_CONTENT_URI, id);
+
+                    String album = cursor.getString(albumColumn);
+                    String artist = cursor.getString(artistColumn);
+                    String year = cursor.getString(yearColumn);
+                    String composer = cursor.getString(composerColumn);
+//                    String genre = cursor.getString(genreColumn);
+
+                    // Stores column values and the contentUri in a local object
+                    // that represents the media file.
+                    PlaylistEntity audioModel = new PlaylistEntity();
+                    audioModel.setTitle(name);
+                    audioModel.setDuration(duration);
+                    audioModel.setUriPath(fullUri);
+                    audioModel.setSize(size);
+                    audioModel.setAlbum(album);
+                    audioModel.setArtist(artist);
+                    audioModel.setComposer(composer);
+//                    audioModel.setGenre(genre);
+                    audioModel.setYear(year);
+                    audioModel.setId(id);
+
+
+
+                    int thumbColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID);
+                    int _thumpId = cursor.getInt(thumbColumn);
+                    Uri imageUri_t = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,_thumpId);
+
+                   /* audioModel.setImageUri(imageUri_t);
+
+                    Bitmap thumbnail = null;
+
+                    if (audioModel.getMp3Cover() != null) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(
+                                audioModel.getMp3Cover(), 0, audioModel.getMp3Cover().length);
+
+                    }*/
+
+                    // Load thumbnail of a specific media item.
+                   /* if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                        try {
+                            thumbnail =
+                                    context.getContentResolver().loadThumbnail(
+                                            contentUri, new Size(640, 480), null);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }*/
+                   // audioModel.setThumbnail(thumbnail);
+
+                    songs.add(audioModel);
+
+                    cursor.moveToNext();
+                }
+            }
+
+        } catch (Exception e) {
+            Log.e("Media", e.toString());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+                cursor = null;
+            }
+        }
+        return songs;
+    }
