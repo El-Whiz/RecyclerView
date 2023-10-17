@@ -1,0 +1,94 @@
+List<PlaylistEntity> playList = getSongsByAlbumID(context, album_id);
+                    albumData.setAudioList(playList);
+                    Log.d(TAG, "TRACKS: " + playList.size());
+
+                    list.add(albumData);
+                    int xCount = cursor.getCount();
+                    Log.d(TAG, "POSITION: " + cursor.getPosition());
+
+//                    albumData.setAlbumArtBitmap();
+
+                } while (cursor.moveToNext());
+
+
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "getListOfAlbums: " + e.getLocalizedMessage());
+        } finally {
+            if (cursor != null)
+                cursor.close();
+            cursor = null;
+        }
+
+
+
+        // add playlsit to list
+
+
+
+        Log.d(TAG, "list.size(): " + list.size());
+
+
+        return list;
+    }
+
+    private static List<PlaylistEntity> getSongsByAlbumID (Context context, long albumID) {
+        List<PlaylistEntity> songs = new ArrayList<>();
+//        String selection = "is_music != 0";
+        String selection = " album_id = " + albumID;
+
+       /* if (albumID > 0) {
+            selection = selection + " and album_id = " + albumID;
+        }*/
+
+        String[] projection = {
+                MediaStore.Audio.Media._ID,
+                MediaStore.Audio.Media.TITLE,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.SIZE,
+                MediaStore.Audio.Media.DISPLAY_NAME,
+                MediaStore.Audio.Media.DURATION,
+                MediaStore.Audio.Media.COMPOSER,
+                MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.ALBUM_ID,
+                MediaStore.Audio.Media.YEAR
+        };
+//        final String sortOrder = MediaStore.Audio.AudioColumns.TITLE + " ASC";
+        final String sortOrder = MediaStore.Audio.AudioColumns.TITLE;
+
+        Cursor cursor = null;
+        try {
+            Uri uri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            cursor = context.getContentResolver().query(uri, projection, selection, null, sortOrder);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int position = 1;
+                while (!cursor.isAfterLast()) {
+                    /*AudioModel song = new AudioModel();
+                    song.setSong_name(cursor.getString(0));
+                    song.setDuration(cursor.getLong(4));
+                    song.setArtist(cursor.getString(1));
+                    song.setUriPath(Uri.parse(cursor.getString(2)));
+                    //song.setPosition(position);
+                    //song.setAlbum(cursor.getLong(6));*/
+
+                    int idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID);
+                    int nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME);
+                    int durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION);
+                    int sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE);
+                    int albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM);
+                    int artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST);
+                    int yearColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR);
+                    int composerColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.COMPOSER);
+//                    int genreColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.GENRE);
+
+
+                    String fullUri = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    
+
+                    // Get values of columns for a given Audio.
+                    long id = cursor.getLong(idColumn);
+                    String name = cursor.getString(nameColumn);
+                    int duration = cursor.getInt(durationColumn);
+                    int size = cursor.getInt(sizeColumn);
