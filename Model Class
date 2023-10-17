@@ -1,0 +1,84 @@
+package com.subnet_master.mangoplayer.audio_player.model;
+
+
+import android.graphics.Bitmap;
+
+import com.subnet_master.mangoplayer.audio_player.db.entities.PlaylistEntity;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+/********************************************
+ *     Created by DailyCoding on 20-Nov-21.  *
+ ********************************************/
+
+public class Album implements Serializable {
+
+    private String albumName;
+    private long albumId;
+    private String artistName;
+    private int nr_of_songs;
+    private String albumArt;
+    private Bitmap albumArtBitmap;
+    private List<PlaylistEntity> audioList;
+
+    public Album() {
+    }
+
+    public String getAlbumName() {
+        return albumName;
+    }
+
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    public long getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(long albumId) {
+        this.albumId = albumId;
+    }
+
+    public List<PlaylistEntity> getAudioList() {
+        return audioList;
+    }
+
+    public void setAudioList(List<PlaylistEntity> audioList) {
+        this.audioList = audioList;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
+    }
+
+    public Bitmap getAlbumArtBitmap() {
+        return albumArtBitmap;
+    }
+
+    public void setAlbumArtBitmap(Bitmap albumArtBitmap) {
+        this.albumArtBitmap = albumArtBitmap;
+    }
+
+    public int getNr_of_songs() {
+        return nr_of_songs;
+    }
+
+    public void setNr_of_songs(int nr_of_songs) {
+        this.nr_of_songs = nr_of_songs;
+    }
+
+    public String getAlbumArt() {
+        return albumArt;
+    }
+
+    public void setAlbumArt(String albumArt) {
+        this.albumArt = albumArt;
+    }
+}
