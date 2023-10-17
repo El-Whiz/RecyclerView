@@ -1,0 +1,201 @@
+package com.subnet_master.mangoplayer.audio_player.db.entities;
+
+import android.graphics.Bitmap;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity(tableName = "playlist_table")
+public class PlaylistEntity {
+
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    @ColumnInfo(name = "uid")
+    private int uid;
+
+    @NonNull
+    @ColumnInfo(name = "id")
+    private long id;
+
+    @NonNull
+    @ColumnInfo(name = "uri_path")
+    private String uriPath;
+
+    @NonNull
+    @ColumnInfo(name = "title")
+    private String title;
+
+    @ColumnInfo(name = "artist")
+    private String artist;
+
+
+    @ColumnInfo(name = "album")
+    private String album;
+
+
+    @ColumnInfo(name = "genre")
+    private String genre;
+
+    @ColumnInfo(name = "composer")
+    private String composer;
+
+    @ColumnInfo(name = "year")
+    private String year;
+
+    @ColumnInfo(name = "duration")
+    private long duration;
+
+    @ColumnInfo(name = "size")
+    private long size;
+
+
+    @Ignore
+    private Bitmap bitmap;
+
+
+
+  /*  @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    private byte[] albumArtByte;*/
+
+    @ColumnInfo(name = "image_uri")
+    private String imageUri;
+
+    @ColumnInfo(name = "album_id")
+    private long albumId;
+
+    @ColumnInfo(name = "search_data")
+    private String searchData;
+
+    public PlaylistEntity() {
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    @NonNull
+    public long getId() {
+        return id;
+    }
+
+    public void setId(@NonNull long id) {
+        this.id = id;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
+    public String getSearchData() {
+        return searchData;
+    }
+
+    public void setSearchData(String searchData) {
+        this.searchData = searchData;
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+
+    public long getAlbumId() {
+        return albumId;
+    }
+
+    public void setAlbumId(long albumId) {
+        this.albumId = albumId;
+    }
+
+    @NonNull
+    public String getUriPath() {
+        return uriPath;
+    }
+
+    public void setUriPath(@NonNull String uriPath) {
+        this.uriPath = uriPath;
+    }
+
+    @NonNull
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(@NonNull String title) {
+        this.title = title;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    @NonNull
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(@NonNull String album) {
+        this.album = album;
+    }
+
+    @NonNull
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(@NonNull String genre) {
+        this.genre = genre;
+    }
+
+    public String getComposer() {
+        return composer;
+    }
+
+    public void setComposer(String composer) {
+        this.composer = composer;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
+    }
