@@ -1,0 +1,97 @@
+// Stores column values and the contentUri in a local object
+                    // that represents the media file.
+                    PlaylistEntity audioModel = new PlaylistEntity();
+                    audioModel.setTitle(name);
+                    audioModel.setDuration(duration);
+                    audioModel.setUriPath(fullPath);
+                    audioModel.setSize(size);
+                    audioModel.setAlbum(album);
+                    audioModel.setArtist(artist);
+                    audioModel.setComposer(composer);
+//                    audioModel.setGenre(genre);
+                    audioModel.setYear(year);
+                    audioModel.setId(id);
+                    audioModel.setSearchData(searchData);
+
+                    long albumId = cursor.getLong(cursor
+                            .getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
+                    audioModel.setAlbumId(albumId);
+
+
+                    Uri sArtworkUri = Uri
+                            .parse("content://media/external/audio/albumart");
+                    Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
+
+                    Bitmap image = PlayerUtil.getBitmapImage(fullPath);
+                    audioModel.setBitmap(image);
+
+                   /* if (duration <= 60000) {
+                        //MINI AUDIO
+                        App.GLOBAL_MINI_TRACKS.add(audioModel);
+                    } else if (duration >= (15*60000)) {
+                        //LARGE AUDIO
+                        App.GLOBAL_LARGE_TRACKS.add(audioModel);
+                    }*/
+
+                    audioModelList.add(audioModel);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "getSongList: " + e.getLocalizedMessage());
+        } finally {
+
+        }
+
+        Log.d(TAG, "getSongList: " + audioModelList.size());
+        return audioModelList;
+    }
+
+
+
+//ALBUM
+    public static List<Album> getAlbumList(Context context) {
+        List<Album> list = new ArrayList<Album>();
+        String where = null;
+
+        final Uri uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+       /* Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            uri = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
+        } else {
+            uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        }*/
+
+
+        final String _id = MediaStore.Audio.Albums._ID;
+        final String album_name = MediaStore.Audio.Albums.ALBUM;
+        final String artist = MediaStore.Audio.Albums.ARTIST;
+        final String albumart = MediaStore.Audio.Albums.ALBUM_ART;
+        final String tracks = MediaStore.Audio.Albums.NUMBER_OF_SONGS;
+
+        String sortOrder = MediaStore.Audio.AlbumColumns.ALBUM + " COLLATE NOCASE ASC";
+        final String[] columns = { _id, album_name, artist, albumart, tracks };
+        Cursor cursor = null;
+        try {
+            cursor = context.getContentResolver().query(uri, columns, where,
+                    null, sortOrder);
+
+            if (cursor.moveToFirst()) {
+
+                do {
+
+                    Album albumData = new Album();
+
+                    long album_id = cursor.getLong(cursor.getColumnIndex(_id));
+                    albumData.setAlbumId(album_id);
+
+                    albumData.setAlbumName(cursor.getString(cursor.getColumnIndex(album_name)));
+
+                    Log.d(TAG, "ALBUM_NAME: " + cursor.getString(cursor.getColumnIndex(album_name)));
+
+                    albumData.setArtistName(cursor.getString(cursor.getColumnIndex(artist)));
+
+                    /*String albumArt = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Albums.ALBUM_ART));
+                    albumData.setAlbumArt(albumArt);*/
+
+                    albumData.setNr_of_songs(Integer.parseInt(cursor.getString(cursor.getColumnIndex(tracks))));
